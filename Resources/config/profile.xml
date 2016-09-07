@@ -6,7 +6,8 @@
 
     <services>
 
-        <service id="fos_user.profile.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+        <service id="fos_user.profile.form" class="Symfony\Component\Form\Form">
+            <factory service="form.factory" method="createNamed" />
             <argument>%fos_user.profile.form.name%</argument>
             <argument>%fos_user.profile.form.type%</argument>
             <argument>null</argument>
