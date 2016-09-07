@@ -21,9 +21,9 @@
             <argument>%fos_user.model.group.class%</argument>
         </service>
 
-        <service id="fos_user.group.form.handler.default" class="FOS\UserBundle\Form\Handler\GroupFormHandler" scope="request" public="false">
+        <service id="fos_user.group.form.handler.default" class="FOS\UserBundle\Form\Handler\GroupFormHandler" public="false">
             <argument type="service" id="fos_user.group.form" />
-            <argument type="service" id="request" />
+            <argument type="service" id="request_stack" />
             <argument type="service" id="fos_user.group_manager" />
         </service>
 

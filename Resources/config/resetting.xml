@@ -20,9 +20,9 @@
             <tag name="form.type" alias="fos_user_resetting" />
         </service>
 
-        <service id="fos_user.resetting.form.handler.default" class="FOS\UserBundle\Form\Handler\ResettingFormHandler" scope="request" public="false">
+        <service id="fos_user.resetting.form.handler.default" class="FOS\UserBundle\Form\Handler\ResettingFormHandler" public="false">
             <argument type="service" id="fos_user.resetting.form" />
-            <argument type="service" id="request" />
+            <argument type="service" id="request_stack" />
             <argument type="service" id="fos_user.user_manager" />
         </service>
 

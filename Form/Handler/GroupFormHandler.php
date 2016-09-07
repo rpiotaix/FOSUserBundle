@@ -14,31 +14,33 @@ namespace FOS\UserBundle\Form\Handler;
 use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\GroupManagerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class GroupFormHandler
 {
-    protected $request;
+    /** @var  RequestStack */
+    protected $requestStack;
     protected $groupManager;
     protected $form;
 
-    public function __construct(FormInterface $form, Request $request, GroupManagerInterface $groupManager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, GroupManagerInterface $groupManager)
     {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->groupManager = $groupManager;
     }
 
     public function process(GroupInterface $group = null)
     {
+        $request = $this->requestStack->getCurrentRequest();
         if (null === $group) {
             $group = $this->groupManager->createGroup('');
         }
 
         $this->form->setData($group);
 
-        if ('POST' === $this->request->getMethod()) {
-            $this->form->bind($this->request);
+        if ('POST' === $request->getMethod()) {
+            $this->form->bind($request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($group);
