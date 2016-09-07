@@ -11,11 +11,13 @@
 
 namespace FOS\UserBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\SecurityContext;
 
-class SecurityController extends ContainerAware
+class SecurityController
 {
+    use ContainerAwareTrait;
+
     public function loginAction()
     {
         $request = $this->container->get('request');
@@ -44,7 +46,7 @@ class SecurityController extends ContainerAware
 
         return $this->renderLogin(array(
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
             'csrf_token' => $csrfToken,
         ));
     }

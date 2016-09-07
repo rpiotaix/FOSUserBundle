@@ -11,7 +11,7 @@
 
 namespace FOS\UserBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,8 +21,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class GroupController extends ContainerAware
+class GroupController
 {
+    use ContainerAwareTrait;
+
     /**
      * Show all groups
      */
@@ -30,7 +32,7 @@ class GroupController extends ContainerAware
     {
         $groups = $this->container->get('fos_user.group_manager')->findGroups();
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:list.html.'.$this->getEngine(), array('groups' => $groups));
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:list.html.' . $this->getEngine(), array('groups' => $groups));
     }
 
     /**
@@ -40,7 +42,7 @@ class GroupController extends ContainerAware
     {
         $group = $this->findGroupBy('name', $groupname);
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:show.html.'.$this->getEngine(), array('group' => $group));
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:show.html.' . $this->getEngine(), array('group' => $group));
     }
 
     /**
@@ -55,14 +57,14 @@ class GroupController extends ContainerAware
         $process = $formHandler->process($group);
         if ($process) {
             $this->setFlash('fos_user_success', 'group.flash.updated');
-            $groupUrl =  $this->container->get('router')->generate('fos_user_group_show', array('groupname' => $group->getName()));
+            $groupUrl = $this->container->get('router')->generate('fos_user_group_show', array('groupname' => $group->getName()));
 
             return new RedirectResponse($groupUrl);
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:edit.html.'.$this->getEngine(), array(
-            'form'      => $form->createview(),
-            'groupname'  => $group->getName(),
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:edit.html.' . $this->getEngine(), array(
+            'form' => $form->createview(),
+            'groupname' => $group->getName(),
         ));
     }
 
@@ -83,7 +85,7 @@ class GroupController extends ContainerAware
             return new RedirectResponse($url);
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:new.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Group:new.html.' . $this->getEngine(), array(
             'form' => $form->createview(),
         ));
     }
@@ -103,8 +105,8 @@ class GroupController extends ContainerAware
     /**
      * Find a group by a specific property
      *
-     * @param string $key   property name
-     * @param mixed  $value property value
+     * @param string $key property name
+     * @param mixed $value property value
      *
      * @throws NotFoundException                    if user does not exist
      * @return \FOS\UserBundle\Model\GroupInterface
@@ -112,7 +114,7 @@ class GroupController extends ContainerAware
     protected function findGroupBy($key, $value)
     {
         if (!empty($value)) {
-            $group = $this->container->get('fos_user.group_manager')->{'findGroupBy'.ucfirst($key)}($value);
+            $group = $this->container->get('fos_user.group_manager')->{'findGroupBy' . ucfirst($key)}($value);
         }
 
         if (empty($group)) {

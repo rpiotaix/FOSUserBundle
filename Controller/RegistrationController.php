@@ -11,13 +11,13 @@
 
 namespace FOS\UserBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
+use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
-use FOS\UserBundle\Model\UserInterface;
 
 /**
  * Controller managing the registration
@@ -25,8 +25,10 @@ use FOS\UserBundle\Model\UserInterface;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class RegistrationController extends ContainerAware
+class RegistrationController
 {
+    use ContainerAwareTrait;
+
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');
@@ -57,7 +59,7 @@ class RegistrationController extends ContainerAware
             return $response;
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.' . $this->getEngine(), array(
             'form' => $form->createView(),
         ));
     }
@@ -75,7 +77,7 @@ class RegistrationController extends ContainerAware
             throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.' . $this->getEngine(), array(
             'user' => $user,
         ));
     }
@@ -112,7 +114,7 @@ class RegistrationController extends ContainerAware
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.' . $this->getEngine(), array(
             'user' => $user,
         ));
     }
@@ -120,7 +122,7 @@ class RegistrationController extends ContainerAware
     /**
      * Authenticate a user with Symfony Security
      *
-     * @param \FOS\UserBundle\Model\UserInterface        $user
+     * @param \FOS\UserBundle\Model\UserInterface $user
      * @param \Symfony\Component\HttpFoundation\Response $response
      */
     protected function authenticateUser(UserInterface $user, Response $response)
